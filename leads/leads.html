@@ -1,0 +1,231 @@
+<title>قايمة Leads البرمجة والـ AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one working column — summary strip, filter bar, then lead cards as scannable rows; playbook tabs below */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#14202e; --muted:#5b6878; --line:#dde2e9;
+  --accent:#0b6e69; --accent-soft:#e2f1ef;
+  --pA:#b4530a; --pA-soft:#fdf0e3; --pB:#2f5c9e; --pB-soft:#e8eef8; --pC:#6b7280; --pC-soft:#eef0f3;
+  --warn:#8a6a00; --warn-soft:#fbf4d9;
+  --f-display:"Readex Pro","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --f-body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f151c; --surface:#17202a; --ink:#e6ebf1; --muted:#9aa7b6; --line:#2a3644;
+  --accent:#4fc2b8; --accent-soft:#163533;
+  --pA:#f0a15c; --pA-soft:#3a2612; --pB:#8db4ee; --pB-soft:#1b2a40; --pC:#a3abb7; --pC-soft:#232c37;
+  --warn:#e6c65a; --warn-soft:#332b0f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151c; --surface:#17202a; --ink:#e6ebf1; --muted:#9aa7b6; --line:#2a3644;
+  --accent:#4fc2b8; --accent-soft:#163533;
+  --pA:#f0a15c; --pA-soft:#3a2612; --pB:#8db4ee; --pB-soft:#1b2a40; --pC:#a3abb7; --pC-soft:#232c37;
+  --warn:#e6c65a; --warn-soft:#332b0f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 60px}
+.wrap{max-width:1080px;margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+h1{font-size:clamp(1.6rem,4vw,2.2rem)}
+h2{font-size:1.25rem}
+.lede{color:var(--muted);max-width:68ch;margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.85rem}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.filters input,.filters select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+.filters input{flex:1 1 200px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{color:var(--muted);font-size:.9rem}
+.list{display:flex;flex-direction:column;gap:8px}
+.lead{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:start}
+.prio{font-family:var(--f-mono);font-size:.95rem;width:34px;height:34px;border-radius:8px;display:grid;place-items:center}
+.prio.A{background:var(--pA-soft);color:var(--pA)} .prio.B{background:var(--pB-soft);color:var(--pB)} .prio.C{background:var(--pC-soft);color:var(--pC)}
+.main{min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.head h3{font-size:1.05rem;direction:ltr;unicode-bidi:isolate}
+.meta{color:var(--muted);font-size:.85rem}
+.sig{margin:4px 0 0}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 8px}
+.unv{font-size:.78rem;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:.9rem}
+.pitch{margin:8px 0 0;padding:10px 12px;background:var(--bg);border-radius:8px}
+.dm{font-size:.88rem;color:var(--muted);margin-top:6px}
+.actions{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.btn{font:inherit;font-size:.82rem;text-decoration:none;text-align:center;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tab{font:inherit;background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;color:var(--muted);cursor:pointer;font-weight:600}
+.tab[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.panel p,.panel li{max-width:72ch}
+.panel ol,.panel ul{padding-inline-start:22px;margin:8px 0}
+.script{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0;white-space:pre-wrap}
+.script .btn{position:absolute;top:8px;left:8px}
+.script h4{margin:0 0 6px;font-family:var(--f-display);font-size:.95rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{border:1px solid var(--line);border-radius:8px;padding:12px}
+.seg h4{margin:0 0 4px;font-family:var(--f-display);font-size:.98rem}
+.seg p{margin:0;color:var(--muted);font-size:.9rem}
+.note{font-size:.85rem;color:var(--muted)}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;font-size:.9rem}
+@media (max-width:640px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .lead{grid-template-columns:auto 1fr}
+  .actions{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
+  .grid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar">
+  <header>
+    <h1>قايمة Leads للبرمجة والـ AI</h1>
+    <p class="lede">شركات في مصر والسعودية والإمارات عندها إشارة شراء واضحة دلوقتي: تمويل جديد، أو إطلاق مشروع، أو توسع في الفروع. كل lead معاه سبب التواصل، والخدمة المناسبة ليه، وزاوية العرض، ومين تكلمه. الإشارات متجمعة لحد نوفمبر 2026.</p>
+  </header>
+
+  <section class="stats" id="stats" aria-label="ملخص"></section>
+
+  <section class="filters" aria-label="فلترة">
+    <input id="q" type="search" placeholder="دوّر باسم شركة أو قطاع…" aria-label="بحث">
+    <select id="country" aria-label="الدولة">
+      <option value="">كل الدول</option><option value="EG">مصر</option><option value="SA">السعودية</option><option value="AE">الإمارات</option>
+    </select>
+    <select id="prio" aria-label="الأولوية">
+      <option value="">كل الأولويات</option><option value="A">A: كلمهم الأسبوع ده</option><option value="B">B: الشهر ده</option><option value="C">C: nurture</option>
+    </select>
+    <div class="chips" id="svcChips" role="group" aria-label="الخدمة"></div>
+    <span class="count" id="count"></span>
+  </section>
+
+  <section class="list" id="list" aria-live="polite"></section>
+
+  <section>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="scripts" id="tab-scripts">رسايل التواصل</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="icp" id="tab-icp">مين العميل المثالي</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="more" id="tab-more">ازاي تجيب leads أكتر</button>
+    </div>
+    <div class="panel" id="panel-scripts">
+      <p>القاعدة: أول رسالة تبقى قصيرة وفيها <b>الإشارة</b> اللي شفتها، ومشكلة واحدة، وطلب صغير. ماتبعتش بروفايل الشركة في أول رسالة.</p>
+      <div class="script"><button class="btn" data-copy="s1">انسخ</button><h4>LinkedIn / Email: شركة لسه واخدة تمويل</h4><span id="s1">أهلاً [الاسم]، مبروك على جولة الـ [Seed] الأخيرة.
+عادةً بعد التمويل الضغط بيبقى على حاجتين: سرعة إطلاق الـ features، والعمليات اليدوية اللي بتكبر مع النمو.
+إحنا بنبني [تطبيقات / AI agents / أتمتة] لشركات في نفس مرحلتكم، وآخر مشروع وفّر [X ساعة أسبوعيًا / X% من تذاكر الدعم].
+ينفع 15 دقيقة الأسبوع ده أوريك فكرة سريعة مخصوصة لـ [اسم الشركة]؟</span></div>
+      <div class="script"><button class="btn" data-copy="s2">انسخ</button><h4>واتساب / LinkedIn: مطور عقاري أطلق مشروع جديد</h4><span id="s2">أهلاً [الاسم]، شفت إطلاق [اسم المشروع]، ألف مبروك.
+سؤال سريع: الـ leads اللي جاية من الإعلانات بيتم الرد عليها في أقل من 5 دقايق، حتى بالليل؟
+عملنا AI agent بيرد على واتساب بالعامية، ويأهّل العميل (الميزانية والمساحة والسداد)، ويحجزله مع السيلز على الـ CRM مباشرة.
+أبعتلك demo مسجل دقيقتين على مشروعكم؟</span></div>
+      <div class="script"><button class="btn" data-copy="s3">انسخ</button><h4>Email: سلسلة فروع (عيادات / مطاعم / كافيهات)</h4><span id="s3">أهلاً [الاسم]، شفت إن [الشركة] بتتوسع لـ [عدد] فرع.
+مع كل فرع جديد التقارير والمخزون والحجوزات بتبقى أصعب لو مش على نظام واحد.
+بنعمل ERP / CRM مربوط بكل الفروع، ومعاه agent على واتساب للحجز والطلبات، وبنبدأ بفرع واحد pilot بسعر ثابت.
+مناسب نتكلم 15 دقيقة يوم [اليوم]؟</span></div>
+      <div class="script"><button class="btn" data-copy="s4">انسخ</button><h4>Follow-up بعد 3 أيام</h4><span id="s4">[الاسم]، بس عشان ماتضيعش الرسالة: جهزت 3 أفكار automation لـ [الشركة] ممكن تطبقوها حتى من غيرنا. أبعتهم؟</span></div>
+      <p class="note">التسلسل المقترح: يوم 1 LinkedIn connect + رسالة، ويوم 3 follow-up، ويوم 6 email بقيمة (فكرة أو demo)، ويوم 10 رسالة أخيرة. بعد كده nurture كل شهر.</p>
+    </div>
+    <div class="panel" id="panel-icp" hidden>
+      <div class="grid2">
+        <div class="seg"><h4>Startups لسه واخدة Seed / Pre-seed</h4><p>عندهم فلوس وضغط وقت وفريق صغير. بيشتروا: MVP، وتطبيق، وفريق إضافي، وأتمتة. يقرر: Founder / CTO.</p></div>
+        <div class="seg"><h4>مطورين عقاريين متوسطين</h4><p>كل إطلاق مشروع بيجيب مئات الـ leads. بيشتروا: CRM عقاري، وAI agent واتساب، ولاندنج بيدج. يقرر: مدير المبيعات أو التسويق.</p></div>
+        <div class="seg"><h4>سلاسل عيادات ومعامل</h4><p>التوسع في الفروع بيكسر الشغل اليدوي. بيشتروا: حجز أونلاين، ونتائج، وERP، وبوت تذكير. يقرر: COO / IT Manager.</p></div>
+        <div class="seg"><h4>مطاعم وكافيهات وفرانشايز</h4><p>عمولات تطبيقات التوصيل عالية. بيشتروا: تطبيق ولاء، وCRM، وتكامل نقاط البيع والمخزون، وبوابة للفرانشايز. يقرر: المالك أو الـ CMO.</p></div>
+      </div>
+      <p><b>معايير التأهيل السريع:</b> فيه إشارة في آخر 6 شهور، وأكتر من 20 موظف أو فيه تمويل، وفيه شغل يدوي ظاهر (رد بطيء أو حجز بالتليفون أو موقع قديم)، وصاحب القرار واضح.</p>
+    </div>
+    <div class="panel" id="panel-more" hidden>
+      <ol>
+        <li><b>أخبار التمويل:</b> تابع Wamda وMagnitt وFWDstart وThe Startup Scene كل أسبوع. أي شركة تعلن جولة تدخل القايمة في نفس اليوم.</li>
+        <li><b>إطلاقات العقارات:</b> Zawya Real Estate وNawy blog وإعلانات فيسبوك (مكتبة الإعلانات / Ad Library). أي مطور بيصرف على إعلانات يبقى عنده leads محتاجة ترد.</li>
+        <li><b>إشارات التوظيف:</b> شركة بتطلب "Odoo Developer" أو "CRM Specialist" أو "Customer Service x10" يبقى محتاجة أتمتة أو ERP. دوّر على LinkedIn Jobs وWuzzuf وBayt.</li>
+        <li><b>المواقع القديمة:</b> ابحث في Google Maps على عيادات ومطاعم بتقييم عالي ومعاها موقع ضعيف أو من غير موقع خالص. دي leads سهلة للمواقع والحجز.</li>
+        <li><b>المعارض:</b> Cityscape Egypt وCairo ICT وLEAP والـ Saudi Franchise Expo وGITEX. خد قايمة العارضين واشتغل عليها قبل المعرض بأسبوعين.</li>
+        <li><b>شراكات إحالة:</b> وكالات تسويق ومحاسبين وشركات Odoo/Zoho. هم بيقابلوا العميل قبلك، فاعرض عليهم عمولة 10 لـ 15%.</li>
+      </ol>
+      <p class="note">علامة "راجع" على أي lead معناها إن المعلومة جاية من موقع بيجمع بيانات مش من الخبر الأصلي، فاتأكد منها قبل ما تتواصل.</p>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast" hidden>اتنسخ</div>
+
+<script>
+const LEADS = [{"n": "Fincart", "c": "EG", "city": "القاهرة", "sec": "تشغيل التجارة الإلكترونية", "sig": "جولة Seed بقيمة 2.8 مليون دولار بقيادة Launch Africa", "date": "2026", "svc": ["auto", "crm", "agent"], "pitch": "بعد التمويل هيكبروا عدد التجار بسرعة. اعرض عليهم أتمتة onboarding للتجار، وAI agent على واتساب لمتابعة الشحنات والمرتجعات، وربطه بالـ CRM.", "dm": "CTO / Head of Operations", "p": "A", "src": "https://www.wamda.com/country/egypt", "v": 1}, {"n": "3C Coding School", "c": "EG", "city": "القاهرة", "sec": "تعليم برمجة (EdTech)", "sig": "جولة Seed بقيمة 3 مليون دولار بقيادة MRG Economic Group", "date": "سبتمبر 2026", "svc": ["app", "agent", "crm", "auto"], "pitch": "محتاجين تطبيق لأولياء الأمور، وAI tutor agent للطلبة، وCRM لمتابعة التسجيل والتجديد وأتمتة رسايل الحجز والتذكير.", "dm": "CEO / Head of Growth", "p": "A", "src": "https://www.wamda.com/country/egypt", "v": 1}, {"n": "NoorNation", "c": "EG", "city": "القاهرة", "sec": "طاقة نظيفة وري زراعي", "sig": "جولة Seed بقيمة 1.05 مليون دولار (Linah Farms وCatalyst Fund وKBW Ventures)", "date": "28 أكتوبر 2026", "svc": ["app", "erp", "agent"], "pitch": "شغلهم ميداني مع فلاحين. اعرض تطبيق لمندوبي الميدان، وERP خفيف للمخزون والتركيبات والتحصيل، وبوت واتساب بالعامية للدعم الفني.", "dm": "COO / CEO", "p": "A", "src": "https://www.wamda.com/2026/10/egyptian-climatetech-noornation-secures-1-05-million-seed-funding", "v": 1}, {"n": "Bekia", "c": "EG", "city": "القاهرة", "sec": "إعادة تدوير", "sig": "جولة Seed بقيمة 765 ألف دولار بقيادة Madica", "date": "21 سبتمبر 2026", "svc": ["app", "auto", "agent"], "pitch": "تطوير تطبيق طلب الاستلام، وأتمتة جدولة المناديب ومساراتهم، وAI agent يرد على العملاء ويحجز مواعيد الاستلام.", "dm": "CEO / Product Lead", "p": "B", "src": "https://www.wamda.com/country/egypt", "v": 1}, {"n": "Mylerz", "c": "EG", "city": "القاهرة", "sec": "لوجستيات وشحن", "sig": "جولة Seed بقيمة 2.8 مليون دولار", "date": "منتصف 2026", "svc": ["agent", "auto", "crm"], "pitch": "تقليل ضغط خدمة العملاء بـ AI agent لتتبع الشحنات، وأتمتة تحديثات الحالة، وCRM للتجار من الشركات.", "dm": "Head of Customer Experience / CTO", "p": "B", "src": "https://datapile.co/funding-news/country/egypt", "v": 0}, {"n": "Reme-D", "c": "EG", "city": "القاهرة", "sec": "تكنولوجيا صحية", "sig": "جولة Pre-Series A بقيمة 1.4 مليون دولار", "date": "منتصف 2026", "svc": ["web", "crm", "auto"], "pitch": "موقع B2B قوي للمستشفيات والمعامل، وCRM لإدارة صفقات التوريد، وأتمتة عروض الأسعار.", "dm": "CEO / Commercial Director", "p": "B", "src": "https://datapile.co/funding-news/country/egypt", "v": 0}, {"n": "SehaTech", "c": "EG", "city": "القاهرة", "sec": "تمويل صحي", "sig": "جولة Pre-seed بقيمة 850 ألف دولار", "date": "نوفمبر 2026", "svc": ["app", "auto", "agent"], "pitch": "MVP لتطبيق، وأتمتة KYC والموافقات، وagent بيشرح خطط التقسيط للمرضى.", "dm": "Founder / CEO", "p": "B", "src": "https://fundediq.co/funded-startups-pre-seed-egypt/", "v": 0}, {"n": "Anees Health", "c": "EG", "city": "القاهرة", "sec": "تكنولوجيا صحية", "sig": "جولة Pre-seed", "date": "سبتمبر 2026", "svc": ["app", "web", "agent"], "pitch": "في مرحلة بناء المنتج. اعرض فريق تطوير تطبيق بسعر ثابت لكل مرحلة، ومعاه agent لحجز المواعيد.", "dm": "Founder / CEO", "p": "B", "src": "https://fundediq.co/funded-startups-pre-seed-egypt/", "v": 0}, {"n": "Mtor", "c": "EG", "city": "القاهرة", "sec": "غير محدد (راجع)", "sig": "جولة Pre-seed بقيمة 2.8 مليون دولار حسب موقع تجميع بيانات", "date": "نوفمبر 2026", "svc": ["web", "app"], "pitch": "راجع نشاطهم الأول. Pre-seed بالحجم ده معناه إن بناء المنتج لسه شغال، فاعرض فريق تطوير مخصص لهم (dedicated team).", "dm": "Founder", "p": "C", "src": "https://fundediq.co/funded-startups-pre-seed-egypt/", "v": 0}, {"n": "Sinai.ai", "c": "EG", "city": "القاهرة", "sec": "كتب تفاعلية بالذكاء الاصطناعي", "sig": "جولة Pre-seed بقيمة 1.45 مليون دولار (KAUST Innovation Ventures)", "date": "أبريل 2026", "svc": ["app", "web"], "pitch": "الأنسب ليهم شراكة مش بيع: فريق frontend وموبايل إضافي لسد العجز (staff augmentation).", "dm": "CTO", "p": "C", "src": "https://www.wamda.com/2026/04/egypts-sinaiai-raises-1-45-million-pre-seed-build-interactive-ai-native-books", "v": 1}, {"n": "Zeal", "c": "EG", "city": "القاهرة", "sec": "ولاء العملاء وتحليلات", "sig": "جولة بقيمة 10 مليون دولار للتوسع", "date": "سبتمبر 2026", "svc": ["web", "app"], "pitch": "هيتوسعوا وهيحتاجوا قدرة تطوير إضافية. اعرض فريق تطوير بعقد شهري، وتطوير تكاملات مع التجار.", "dm": "VP Engineering", "p": "C", "src": "https://www.arabnews.com/node/2651443/amp", "v": 1}, {"n": "Squares Developments", "c": "EG", "city": "العاصمة الإدارية", "sec": "تطوير عقاري", "sig": "أطلقوا Sage Lakes Residence باستثمارات 15 مليار جنيه، ومحضّرين لمشروع في الساحل", "date": "2026", "svc": ["crm", "agent", "web", "auto"], "pitch": "CRM عقاري لإدارة الـ leads والوسطاء، وAI agent يأهّل العملاء على واتساب 24/7، ولاندنج بيدج لكل مشروع مربوطة بالإعلانات.", "dm": "Sales Director / Marketing Manager", "p": "A", "src": "https://www.dailynewsegypt.com/?p=839393", "v": 1}, {"n": "Special Group & Mint Real Estate", "c": "EG", "city": "العاصمة الإدارية", "sec": "تطوير عقاري", "sig": "أطلقوا مشروع 40 Square التجاري المتعدد الاستخدامات باستثمارات 7 مليار جنيه", "date": "2026", "svc": ["crm", "agent", "web"], "pitch": "مشروع تجاري وإداري بيستهدف مستثمرين. اعرض CRM ومتابعة آلية، وموقع للمشروع فيه 3D وحجز زيارات، وagent يرد بالأسعار وخطط السداد.", "dm": "Commercial Director", "p": "A", "src": "https://www.zawya.com/en/projects/construction/egypts-special-group-and-mint-real-estate-launch-139mln-40-square-project-in-new-capital-wyn0qr4g", "v": 1}, {"n": "New Event Developments", "c": "EG", "city": "العاصمة الإدارية", "sec": "تطوير عقاري", "sig": "أطلقوا Layal Residence في العاصمة الإدارية", "date": "2026", "svc": ["crm", "agent", "web"], "pitch": "مطور متوسط الحجم ومعظمهم بيشتغل بشيتات إكسل. اعرض CRM عقاري جاهز بسعر ثابت، وبوت يأهّل العملاء من إعلانات فيسبوك.", "dm": "CEO / Sales Manager", "p": "A", "src": "https://www.zawya.com/en/press-release/companies-news/new-event-developments-launches-layal-residence-in-egypts-new-capital-ipmzok5w", "v": 1}, {"n": "Osool Developments", "c": "EG", "city": "الساحل الشمالي", "sec": "تطوير عقاري", "sig": "أطلقوا Sayf Resort على 40 فدان في سيدي عبد الرحمن", "date": "2026", "svc": ["crm", "agent", "web", "app"], "pitch": "مشروع ساحل، يعني موسم بيع قصير ومكثف. اعرض AI agent يرد فورًا، وCRM، وبعدين تطبيق للملاك (صيانة وحجوزات).", "dm": "Marketing Manager", "p": "A", "src": "https://www.zawya.com/en/projects/construction/egypt-osool-developments-launches-40-feddan-sayf-resort-in-north-coast-410091", "v": 1}, {"n": "Reedy Development", "c": "EG", "city": "الساحل الشمالي", "sec": "تطوير وإدارة عقارية", "sig": "المطور الرئيسي لمشروع مدينة مصر في الساحل (حوالي 101 فدان عند الكيلو 183)", "date": "2026", "svc": ["erp", "crm", "app"], "pitch": "هم اللي هيطوروا ويديروا المشروع. اعرض نظام إدارة عقارات/ERP (عقود وتحصيل وصيانة) وتطبيق للسكان.", "dm": "Managing Director", "p": "B", "src": "https://www.zawya.com/en/projects/construction/egypts-madinet-masr-enters-north-coast-with-101-acre-project-622884", "v": 1}, {"n": "Hyde Park Developments", "c": "EG", "city": "القاهرة الجديدة", "sec": "تطوير عقاري", "sig": "أطلقوا One Hyde Park (حوالي 8500 وحدة)، ودي رابع إطلاق ليهم في 2026", "date": "2026", "svc": ["agent", "auto"], "pitch": "شركة كبيرة وعندها CRM غالبًا. ادخل بحاجة محددة: AI agent لخدمة العملاء والملاك، أو أتمتة التقارير بين المبيعات والتسويق.", "dm": "Head of Digital / CIO", "p": "B", "src": "https://zawya.com/en/business/construction/hyde-park-developments-launches-8500-unit-one-hyde-park-in-new-cairo-483387", "v": 1}, {"n": "Al Shrouk Scan & Lab", "c": "EG", "city": "القاهرة والمحافظات", "sec": "أشعة ومعامل", "sig": "خطة توسع بـ 20 مليون دولار وفروع جديدة في التجمع وإسكندرية وشبين الكوم وطنطا", "date": "2026", "svc": ["app", "agent", "erp", "web"], "pitch": "تطبيق حجز وعرض النتائج أونلاين، وبوت واتساب للحجز والاستعلام، وERP يربط كل الفروع ببعض.", "dm": "CEO / IT Manager", "p": "A", "src": "https://www.zawya.com/en/projects/industry/egypts-al-shroouk-scan-scan-and-lab-outlines-major-expansion-by-2030-tpaxxa7x", "v": 1}, {"n": "Dawi Clinics", "c": "EG", "city": "القاهرة", "sec": "سلسلة عيادات", "sig": "عايزين يزودوا الفروع من 16 لـ 50 فرع (تاريخ الخبر محتاج تتأكد منه)", "date": "راجع", "svc": ["crm", "agent", "app", "erp"], "pitch": "التوسع لـ 50 فرع محتاج نظام موحد. اعرض CRM للمرضى، وحجز آلي، وagent للتذكير بالمواعيد والمتابعة.", "dm": "CEO / COO", "p": "A", "src": "https://www.zawya.com/en/business/healthcare/ceo-interview-homegrown-clinic-chain-dawi-brings-gps-to-egypts-ailing-healthcare-sector-qjnkx4hk", "v": 1}, {"n": "Alameda Healthcare Group", "c": "EG", "city": "القاهرة والمحافظات", "sec": "مستشفيات وعيادات", "sig": "عيادة جديدة في بني سويف، وبعدها طنطا وإسكندرية (9 عيادات بنهاية 2026)، ومستشفى في العاصمة", "date": "أغسطس 2026", "svc": ["agent", "auto", "app"], "pitch": "مجموعة كبيرة، فادخل بـ pilot محدد: agent لحجز العيادات الجديدة بالعامية، أو أتمتة الـ follow-up بعد الزيارة.", "dm": "Head of Digital Transformation", "p": "B", "src": "https://intlbm.com/2026/08/31/alameda-healthcare-group-expands-in-beni-suef-with-specialized-clinic/", "v": 1}, {"n": "Baheya Foundation", "c": "EG", "city": "القاهرة الجديدة", "sec": "مؤسسة صحية خيرية", "sig": "افتتحوا وحدة الكشف المبكر الثالثة وعيادات تخصصية", "date": "أغسطس 2026", "svc": ["web", "crm", "auto"], "pitch": "موقع تبرعات أسرع وبيحول أحسن، وCRM للمتبرعين، وأتمتة إيصالات التبرع وحملات رمضان.", "dm": "Fundraising Director / Marketing Manager", "p": "B", "src": "https://www.egypttoday.com/Article/6/148814/Baheya-Launches-its-third-Early-Detection-Unit-and-Specialized-Outpatient", "v": 1}, {"n": "Saudi German Hospital Alexandria", "c": "EG", "city": "الإسكندرية", "sec": "مستشفيات", "sig": "توسع في إسكندرية (مجمع فيه 35 عيادة)، واستهداف سياحة الخصوبة من الخليج", "date": "أغسطس 2026", "svc": ["web", "agent", "crm"], "pitch": "مرضى سياحة علاجية من الخليج محتاجين لاندنج بيدج ليهم، وagent بالخليجي يرد ويحجز، وCRM لمتابعة كل حالة.", "dm": "Marketing Director", "p": "C", "src": "https://www.dailynewsegypt.com/2026/08/01/saudi-german-hospital-expands-in-alexandria-targets-gulf-fertility-tourism-through-conceive-partnership/", "v": 1}, {"n": "Gourmet Egypt", "c": "EG", "city": "القاهرة", "sec": "تجزئة أغذية فاخرة", "sig": "بيفتحوا 2 لـ 3 فروع كل سنة (نيو كايرو ونيو جيزة)، ومستهدفين 173 مليون دولار مبيعات بحلول 2030", "date": "2026", "svc": ["app", "crm", "agent"], "pitch": "تطبيق ولاء وطلبات، وCRM لتقسيم العملاء، وagent على واتساب للطلبات والاشتراكات الأسبوعية.", "dm": "Head of E-commerce / CMO", "p": "B", "src": "https://www.zawya.com/en/capital-markets/equities/gourmet-egypt-targets-173mln-annual-sales-by-2030-v8mpq1ci", "v": 1}, {"n": "Souhoola", "c": "EG", "city": "القاهرة", "sec": "تمويل استهلاكي", "sig": "افتتاح فرع سيتي ستارز ضمن خطة التوسع", "date": "مايو 2026", "svc": ["agent", "auto"], "pitch": "agent يأهّل طلبات التقسيط ويجمع المستندات، وأتمتة الـ approvals.", "dm": "Head of Digital", "p": "C", "src": "https://www.zawya.com/en/press-release/companies-news/souhoola-opens-its-new-branch-at-city-stars-ou665zmc", "v": 1}, {"n": "DawaDose", "c": "SA", "city": "الرياض", "sec": "صيدليات وصحة رقمية", "sig": "قفلوا جولة Seed (القيمة مش معلنة) عشان يوسعوا شبكة الصيدليات", "date": "نوفمبر 2026", "svc": ["app", "erp", "agent"], "pitch": "ربط شبكة الصيدليات بـ ERP للمخزون، وتطبيق للطلبات، وagent يذكّر المرضى بمواعيد الجرعات.", "dm": "Founder / CTO", "p": "A", "src": "https://thestartupscene.me/", "v": 0}, {"n": "Burgerizzr", "c": "SA", "city": "الرياض", "sec": "مطاعم", "sig": "صافي الربح زاد 202% بفضل الفروع الجديدة، ومستهدفين 200 فرع بنهاية 2030", "date": "الربع الأول 2026", "svc": ["app", "crm", "erp", "auto"], "pitch": "تطبيق طلبات وولاء يقلل عمولات تطبيقات التوصيل، وCRM، وتكامل ERP مع نقاط البيع والمخزون لكل الفروع.", "dm": "CMO / IT Manager", "p": "A", "src": "https://www.arabnews.pk/node/2642664", "v": 1}, {"n": "Barn's Coffee", "c": "SA", "city": "جدة", "sec": "قهوة (فرانشايز)", "sig": "اتفاقية فرانشايز لدخول عمان والإمارات، وعندهم أكتر من 600 فرع", "date": "2026", "svc": ["erp", "auto", "web"], "pitch": "بوابة لإدارة الفرانشايز (طلبات توريد ومراجعات وتقارير)، وأتمتة تقارير الفروع، وموقع للفرانشايز يجمع leads.", "dm": "Franchise Director / CIO", "p": "B", "src": "https://www.zawya.com/en/press-release/companies-news/barns-expands-into-oman-and-uae-with-strategic-franchise-agreement-tkjywijq", "v": 1}, {"n": "Qaf Coffee", "c": "SA", "city": "السعودية", "sec": "قهوة", "sig": "خطة 10 فروع جديدة (الخبر من 2025، اتأكد إيه اللي اتنفذ)", "date": "2025", "svc": ["app", "crm", "erp"], "pitch": "سلسلة متوسطة بتكبر. اعرض تطبيق ولاء وCRM ونظام مخزون وتوريد للفروع.", "dm": "Owner / Operations Manager", "p": "B", "src": "https://en.sharikatmubasher.com/media-hub/news/21466157/qaf-coffee-to-open-10-new-branches-in-2025?lang=en", "v": 1}, {"n": "The Chord", "c": "SA", "city": "السعودية", "sec": "قهوة (فرانشايز)", "sig": "بيبيعوا فرانشايز بـ 35 ألف ريال، وخطة 70 فرع (من 2025)", "date": "2025", "svc": ["web", "crm", "erp"], "pitch": "موقع وCRM لإدارة طلبات الفرانشايز، وبوابة للشركاء لمتابعة الأداء والتوريد.", "dm": "Founder / Franchise Manager", "p": "B", "src": "https://sharikatmubasher.com/media-hub/news/21466370/the-chord-to-inaugurate-70-branches-in-kingdom-by-end-2025?lang=en", "v": 1}, {"n": "KUDU", "c": "SA", "city": "الرياض", "sec": "وجبات سريعة", "sig": "أول فرانشايز دولي ليهم في الكويت", "date": "يناير 2026", "svc": ["agent", "auto"], "pitch": "شركة كبيرة، فادخل بـ pilot لـ AI agent لخدمة العملاء أو أتمتة الشكاوى.", "dm": "Head of Digital / CX", "p": "C", "src": "https://saudigazette.com.sa/article/658173/BUSINESS/KUDU-launches-its-first-international-franchise-in-Kuwait", "v": 1}, {"n": "AILA", "c": "SA", "city": "الرياض", "sec": "تعليم (EdTech)", "sig": "جولة Pre-Series A بقيمة 3 مليون دولار بقيادة Rua Growth Fund", "date": "أغسطس 2026", "svc": ["app", "web", "agent"], "pitch": "قدرة تطوير إضافية للتطبيق، وAI agents للدعم والمبيعات للمدارس.", "dm": "CTO / CEO", "p": "B", "src": "https://www.fwdstart.me/p/saudi-edtech-aila-raises-3m-pre-series-a-led-by-rua-growth-fund", "v": 1}, {"n": "Vrtx", "c": "SA", "city": "الرياض", "sec": "Fintech (بنية محافظ وكروت)", "sig": "جولة Pre-seed بقيمة 3.6 مليون دولار", "date": "أكتوبر 2026", "svc": ["web", "app", "crm"], "pitch": "موقع للمطورين وdashboard للعملاء، وCRM لمبيعات B2B.", "dm": "Founder / Head of Product", "p": "B", "src": "https://www.fwdstart.me/p/saudi-fintech-vrtx-raises-3-6m-pre-seed-to-help-businesses-launch-wallets-and-cards", "v": 1}, {"n": "Sirdab", "c": "SA", "city": "الرياض", "sec": "مستودعات ولوجستيات", "sig": "جولة Series A بقيمة 10 مليون دولار (Elm وBECO Capital)", "date": "2026", "svc": ["erp", "auto", "agent"], "pitch": "تكامل WMS مع ERP العملاء (زي Odoo وZoho)، وأتمتة الفواتير، وagent لاستعلامات المخزون.", "dm": "CTO / Integrations Lead", "p": "B", "src": "https://www.wamda.com/country/saudi-arabia", "v": 1}, {"n": "Nayla", "c": "SA", "city": "السعودية", "sec": "تمويل متناهي الصغر", "sig": "جولة Pre-Series A بقيمة 18 مليون دولار (أسهم ودين)", "date": "2026", "svc": ["auto", "agent", "crm"], "pitch": "أتمتة رحلة القرض من الطلب للتحصيل، وagent للتذكير بالأقساط، وCRM للعملاء.", "dm": "COO / CTO", "p": "B", "src": "https://www.wamda.com/country/saudi-arabia", "v": 1}, {"n": "Lambda Studios", "c": "SA", "city": "الرياض", "sec": "ألعاب", "sig": "جولة بقيمة 1.3 مليون دولار بقيادة Merak Capital", "date": "نوفمبر 2026", "svc": ["web", "auto"], "pitch": "موقع ولاندنج بيدج لكل لعبة، وأتمتة إدارة المجتمع على Discord وجمع الـ feedback.", "dm": "Founder", "p": "C", "src": "https://thestartupscene.me/", "v": 0}, {"n": "Rime", "c": "SA", "city": "الرياض", "sec": "AI للتجزئة", "sig": "جولة Seed بأكتر من 2 مليون دولار بقيادة SEEDRA Ventures", "date": "أغسطس 2026", "svc": ["app", "web"], "pitch": "منافس محتمل وشريك محتمل. اعرض تكون شريك تنفيذ أو تكامل مع أنظمة سلاسل التجزئة.", "dm": "CEO", "p": "C", "src": "https://www.fwdstart.me/p/saudi-rime-raises-2m-seed-to-run-ai-agents-on-site-for-retail-chains", "v": 1}, {"n": "Ejari", "c": "SA", "city": "الرياض", "sec": "Fintech للإيجارات", "sig": "جولة دين بقيمة 50 مليون دولار حسب FundUp", "date": "نوفمبر 2026", "svc": ["agent", "auto"], "pitch": "agent للتحصيل والتذكير بالإيجار، وأتمتة الـ onboarding للملاك.", "dm": "Head of Operations", "p": "C", "src": "https://fundup.ai/recently-funded-startups/country/saudi-arabia", "v": 0}, {"n": "Rentify", "c": "AE", "city": "دبي", "sec": "إدارة عقارات", "sig": "جولة Seed بقيمة 2 مليون دولار", "date": "يونيو 2026", "svc": ["crm", "auto", "agent", "app"], "pitch": "أتمتة طلبات الصيانة والتحصيل، وagent للمستأجرين، وتطبيق للملاك، وCRM.", "dm": "CEO / CTO", "p": "A", "src": "https://www.dxbstart.com/dubai-proptech-startups-2026", "v": 0}, {"n": "Prop-AI", "c": "AE", "city": "دبي", "sec": "Proptech بالذكاء الاصطناعي", "sig": "جولة Pre-seed بقيمة 1.5 مليون دولار بقيادة Plus VC، والتوسع في MENA", "date": "2026", "svc": ["app", "web", "agent"], "pitch": "التوسع في MENA محتاج تعريب ونسخ محلية. اعرض فريق تطوير بالعربي وagents بالعامية المصرية والخليجية.", "dm": "Founder / CTO", "p": "B", "src": "https://www.eyeofriyadh.com/news/details/dubai-proptech-prop-ai-secures-1-5-million-pre-seed", "v": 1}, {"n": "estaie", "c": "AE", "city": "دبي", "sec": "إقامات طويلة", "sig": "جولة Pre-seed بسبعة أرقام (PlusVC وOrbit Ventures)", "date": "أبريل 2026", "svc": ["app", "agent", "auto"], "pitch": "agent للحجوزات والاستفسارات، وأتمتة الـ check-in وتنسيق التنظيف، وتطبيق للضيوف.", "dm": "Founder", "p": "B", "src": "https://www.dxbstart.com/dubai-proptech-startups-2026", "v": 0}, {"n": "Vitalls", "c": "AE", "city": "أبوظبي", "sec": "صحة رقمية بالذكاء الاصطناعي", "sig": "جولة Seed بقيمة 1.5 مليون دولار", "date": "26 أكتوبر 2026", "svc": ["app", "web"], "pitch": "تطوير تطبيق الموبايل وتوسيعه، ولوحات تحكم للمستشفيات الشريكة.", "dm": "CTO", "p": "B", "src": "https://www.finsmes.com/category/uae", "v": 0}, {"n": "CapQuest", "c": "AE", "city": "دبي", "sec": "إدارة الملكية (Cap table)", "sig": "جولة Pre-seed بقيمة مليون دولار بقيادة Oraseya Capital", "date": "20 أكتوبر 2026", "svc": ["web", "app", "crm"], "pitch": "MVP وتطوير منصة الويب، وموقع تسويقي، وCRM لمبيعات SaaS.", "dm": "Founder", "p": "B", "src": "https://www.finsmes.com/category/uae", "v": 0}, {"n": "Nabta Health", "c": "AE", "city": "دبي", "sec": "صحة المرأة", "sig": "جولة Series A بقيادة Phoenix Venture Partners", "date": "20 أكتوبر 2026", "svc": ["app", "agent", "auto"], "pitch": "AI agent لمتابعة المريضات بالعربي، وأتمتة المواعيد والتقارير.", "dm": "CTO / Head of Product", "p": "B", "src": "https://tracxn.com/d/geographies/united-arab-emirates/__3OiAv3pREWpxnktEnzWFLJSYAQglJ5zhPRSqNSmDIKs", "v": 0}, {"n": "Peekabox", "c": "AE", "city": "أبوظبي", "sec": "Food-tech (فائض الطعام)", "sig": "مسجلين ضمن الشركات الممولة حديثًا", "date": "2026", "svc": ["app", "auto"], "pitch": "تطوير التطبيق، وأتمتة إضافة المطاعم والكافيهات (onboarding) وتحديث المخزون اليومي.", "dm": "Founder", "p": "C", "src": "https://fundediq.co/funded-startups-united-arab-emirates/", "v": 0}, {"n": "FooDriver", "c": "AE", "city": "الإمارات", "sec": "لوجستيات أغذية", "sig": "جولة Pre-seed", "date": "أكتوبر 2026", "svc": ["app", "erp"], "pitch": "تطبيق سائقين ولوحة تحكم للعمليات، وتكامل مع ERP الموردين.", "dm": "Founder", "p": "C", "src": "https://fundediq.co/funded-startups-united-arab-emirates/", "v": 0}, {"n": "Kaso", "c": "AE", "city": "دبي", "sec": "مشتريات المطاعم", "sig": "ضمن شركات Seed في الإمارات 2026", "date": "2026", "svc": ["erp", "auto"], "pitch": "شريك تكامل: ربط Kaso مع ERP ونقاط البيع عند المطاعم. ممكن تبقى قناة إحالة كمان.", "dm": "Partnerships Lead", "p": "C", "src": "https://indexed.vc/top/seed-companies-in-uae", "v": 0}];
+const SVC = {web:"مواقع",app:"تطبيقات",agent:"AI Agents",auto:"AI Automation",erp:"ERP",crm:"CRM"};
+const CN = {EG:"مصر",SA:"السعودية",AE:"الإمارات"};
+const PR = {A:"كلمهم الأسبوع ده",B:"الشهر ده",C:"nurture"};
+const state = {q:"",country:"",prio:"",svc:new Set()};
+const $ = s=>document.querySelector(s);
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function stats(){
+  const by = k=>LEADS.filter(l=>l.c===k).length;
+  $("#stats").innerHTML = [
+    [LEADS.length,"lead عليه إشارة"],
+    [LEADS.filter(l=>l.p==="A").length,"أولوية A"],
+    [by("EG"),"مصر"],
+    [by("SA")+" / "+by("AE"),"السعودية / الإمارات"]
+  ].map(([v,t])=>`<div class="stat"><b>${v}</b><span>${t}</span></div>`).join("");
+}
+function chips(){
+  $("#svcChips").innerHTML = Object.entries(SVC).map(([k,v])=>`<button class="chip" aria-pressed="false" data-svc="${k}" id="chip-${k}">${v}</button>`).join("");
+  $("#svcChips").addEventListener("click",e=>{
+    const b=e.target.closest(".chip"); if(!b) return;
+    const k=b.dataset.svc; state.svc.has(k)?state.svc.delete(k):state.svc.add(k);
+    b.setAttribute("aria-pressed",state.svc.has(k)); render();
+  });
+}
+function msg(l){
+  return `أهلاً [الاسم]، شفت خبر ${l.sig} بتاع ${l.n}، مبروك.\n${l.pitch}\nينفع 15 دقيقة الأسبوع ده أعرض عليك فكرة مخصوصة ليكم؟`;
+}
+function render(){
+  const q=state.q.trim().toLowerCase();
+  const rows=LEADS.filter(l=>
+    (!state.country||l.c===state.country)&&(!state.prio||l.p===state.prio)&&
+    (!state.svc.size||[...state.svc].every(s=>l.svc.includes(s)))&&
+    (!q||(l.n+" "+l.sec+" "+l.city+" "+l.sig).toLowerCase().includes(q))
+  ).sort((a,b)=>a.p.localeCompare(b.p));
+  $("#count").textContent = rows.length+" من "+LEADS.length;
+  $("#list").innerHTML = rows.length? rows.map((l,i)=>`
+    <article class="lead">
+      <div class="prio ${l.p}" title="${PR[l.p]}">${l.p}</div>
+      <div class="main">
+        <div class="head"><h3>${esc(l.n)}</h3><span class="meta">${CN[l.c]} · ${esc(l.city)} · ${esc(l.sec)}</span></div>
+        <p class="sig"><b>الإشارة:</b> ${esc(l.sig)} <span class="meta">(${esc(l.date)})</span></p>
+        <div class="tags">${l.svc.map(s=>`<span class="tag">${SVC[s]}</span>`).join("")}${l.v?"":`<span class="unv">راجع</span>`}</div>
+        <details><summary>زاوية العرض ومين تكلمه</summary>
+          <p class="pitch">${esc(l.pitch)}</p>
+          <p class="dm"><b>صاحب القرار:</b> <span dir="ltr">${esc(l.dm)}</span></p>
+        </details>
+      </div>
+      <div class="actions">
+        <button class="btn" data-msg="${LEADS.indexOf(l)}">انسخ رسالة</button>
+        <a class="btn" href="https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(l.n)}" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="${esc(l.src)}" target="_blank" rel="noopener">المصدر</a>
+      </div>
+    </article>`).join("") : `<p class="meta">مفيش leads بالفلاتر دي. شيل فلتر وجرب تاني.</p>`;
+}
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,1400)}
+async function copy(text,node){
+  try{await navigator.clipboard.writeText(text);toast("اتنسخ")}
+  catch(e){ if(node){const r=document.createRange();r.selectNodeContents(node);const s=getSelection();s.removeAllRanges();s.addRange(r);} toast("حدد النص وانسخه يدوي") }
+}
+document.addEventListener("click",e=>{
+  const m=e.target.closest("[data-msg]"); if(m){copy(msg(LEADS[+m.dataset.msg]));return}
+  const c=e.target.closest("[data-copy]"); if(c){const n=document.getElementById(c.dataset.copy);copy(n.textContent,n);return}
+  const t=e.target.closest(".tab"); if(t){
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+    ["scripts","icp","more"].forEach(k=>document.getElementById("panel-"+k).hidden = k!==t.dataset.tab);
+  }
+});
+$("#q").addEventListener("input",e=>{state.q=e.target.value;render()});
+$("#country").addEventListener("change",e=>{state.country=e.target.value;render()});
+$("#prio").addEventListener("change",e=>{state.prio=e.target.value;render()});
+stats();chips();render();
+</script>
