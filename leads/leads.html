@@ -201,7 +201,8 @@ function chips(){
   });
 }
 function msg(l){
-  return `أهلاً [الاسم]، شفت خبر ${l.sig} بتاع ${l.n}، مبروك.\n${l.pitch}\nينفع 15 دقيقة الأسبوع ده أعرض عليك فكرة مخصوصة ليكم؟`;
+  const svc = l.svc.map(s=>SVC[s]).join(" و");
+  return `أهلاً فريق ${l.n}، شفت آخر أخباركم (${l.sig})، ألف مبروك.\nإحنا بنساعد شركات في نفس مرحلتكم في ${svc}، وعندي فكرة سريعة مخصوصة ليكم.\nأبعتها هنا ولا على الإيميل؟`;
 }
 function render(){
   const q=state.q.trim().toLowerCase();
